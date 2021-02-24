@@ -1,9 +1,0 @@
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.Common\bin\Release\netcoreapp3.1\Tsoft.Framework.Common.deps.json
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.Common\bin\Release\netcoreapp3.1\Tsoft.Framework.Common.dll
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.Common\bin\Release\netcoreapp3.1\Tsoft.Framework.Common.pdb
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.Common\obj\Release\netcoreapp3.1\Tsoft.Framework.Common.csprojAssemblyReference.cache
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.Common\obj\Release\netcoreapp3.1\Tsoft.Framework.Common.AssemblyInfoInputs.cache
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.Common\obj\Release\netcoreapp3.1\Tsoft.Framework.Common.AssemblyInfo.cs
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.Common\obj\Release\netcoreapp3.1\Tsoft.Framework.Common.csproj.CoreCompileInputs.cache
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.Common\obj\Release\netcoreapp3.1\Tsoft.Framework.Common.dll
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.Common\obj\Release\netcoreapp3.1\Tsoft.Framework.Common.pdb

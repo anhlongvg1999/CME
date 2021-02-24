@@ -1,9 +1,0 @@
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.CacheMemory\bin\Release\netcoreapp3.1\Tsoft.Framework.CacheMemory.deps.json
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.CacheMemory\bin\Release\netcoreapp3.1\Tsoft.Framework.CacheMemory.dll
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.CacheMemory\bin\Release\netcoreapp3.1\Tsoft.Framework.CacheMemory.pdb
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.CacheMemory\obj\Release\netcoreapp3.1\Tsoft.Framework.CacheMemory.csprojAssemblyReference.cache
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.CacheMemory\obj\Release\netcoreapp3.1\Tsoft.Framework.CacheMemory.AssemblyInfoInputs.cache
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.CacheMemory\obj\Release\netcoreapp3.1\Tsoft.Framework.CacheMemory.AssemblyInfo.cs
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.CacheMemory\obj\Release\netcoreapp3.1\Tsoft.Framework.CacheMemory.csproj.CoreCompileInputs.cache
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.CacheMemory\obj\Release\netcoreapp3.1\Tsoft.Framework.CacheMemory.dll
-E:\A-TCOM\CRM\crm.backend\Tsoft.Framework.CacheMemory\obj\Release\netcoreapp3.1\Tsoft.Framework.CacheMemory.pdb
