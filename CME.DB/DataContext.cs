@@ -22,7 +22,7 @@ namespace SERP.Filenet.DB
                 new Organization
                 {
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                    Name = "Bệnh viện Xanh Pôn",
+                    Name = "BV Xanh Pôn",
                     Code = "BVXP",
                     Address = "12 Chu Văn An, Điện Bàn, Ba Đình, Hà Nội",
                     CreatedOnDate = DateTime.Now,
