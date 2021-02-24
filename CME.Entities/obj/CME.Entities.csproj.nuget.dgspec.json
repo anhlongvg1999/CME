@@ -1,0 +1,222 @@
+{
+  "format": 1,
+  "restore": {
+    "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\CME.Entities\\CME.Entities.csproj": {}
+  },
+  "projects": {
+    "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\CME.Entities\\CME.Entities.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\CME.Entities\\CME.Entities.csproj",
+        "projectName": "CME.Entities",
+        "projectPath": "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\CME.Entities\\CME.Entities.csproj",
+        "packagesPath": "C:\\Users\\DAC HIEU\\.nuget\\packages\\",
+        "outputPath": "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\CME.Entities\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\DAC HIEU\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "E:\\A-TCOM\\TsoftNuget\\TSoft.Framework": {},
+          "http://git.dttt.vn/api/v4/projects/8/packages/nuget/index.json": {},
+          "http://nuget.grapecity.com/nuget": {},
+          "http://nuget.s-erp.vn/nuget": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\Framework\\TSoft.Framework.DB\\TSoft.Framework.DB.csproj": {
+                "projectPath": "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\Framework\\TSoft.Framework.DB\\TSoft.Framework.DB.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\Framework\\Tsoft.Framework.Common\\Tsoft.Framework.Common.csproj": {
+      "version": "1.0.1",
+      "restore": {
+        "projectUniqueName": "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\Framework\\Tsoft.Framework.Common\\Tsoft.Framework.Common.csproj",
+        "projectName": "Tsoft.Framework.Common",
+        "projectPath": "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\Framework\\Tsoft.Framework.Common\\Tsoft.Framework.Common.csproj",
+        "packagesPath": "C:\\Users\\DAC HIEU\\.nuget\\packages\\",
+        "outputPath": "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\Framework\\Tsoft.Framework.Common\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\DAC HIEU\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "E:\\A-TCOM\\TsoftNuget\\TSoft.Framework": {},
+          "http://git.dttt.vn/api/v4/projects/8/packages/nuget/index.json": {},
+          "http://nuget.grapecity.com/nuget": {},
+          "http://nuget.s-erp.vn/nuget": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[10.1.1, )"
+            },
+            "AutoMapper.Collection": {
+              "target": "Package",
+              "version": "[7.0.1, )"
+            },
+            "AutoMapper.Data": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\Framework\\TSoft.Framework.DB\\TSoft.Framework.DB.csproj": {
+      "version": "2.0.2",
+      "restore": {
+        "projectUniqueName": "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\Framework\\TSoft.Framework.DB\\TSoft.Framework.DB.csproj",
+        "projectName": "TSoft.Framework.DB",
+        "projectPath": "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\Framework\\TSoft.Framework.DB\\TSoft.Framework.DB.csproj",
+        "packagesPath": "C:\\Users\\DAC HIEU\\.nuget\\packages\\",
+        "outputPath": "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\Framework\\TSoft.Framework.DB\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\DAC HIEU\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "E:\\A-TCOM\\TsoftNuget\\TSoft.Framework": {},
+          "http://git.dttt.vn/api/v4/projects/8/packages/nuget/index.json": {},
+          "http://nuget.grapecity.com/nuget": {},
+          "http://nuget.s-erp.vn/nuget": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\Framework\\Tsoft.Framework.Common\\Tsoft.Framework.Common.csproj": {
+                "projectPath": "E:\\A-Outsource\\Xanhpon\\CME-Backend\\CME\\Framework\\Tsoft.Framework.Common\\Tsoft.Framework.Common.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "target": "Package",
+              "version": "[5.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

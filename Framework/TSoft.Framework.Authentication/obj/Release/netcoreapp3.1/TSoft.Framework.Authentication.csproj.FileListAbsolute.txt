@@ -1,0 +1,16 @@
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\bin\Release\netcoreapp3.1\TSoft.Framework.Authentication.deps.json
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\bin\Release\netcoreapp3.1\TSoft.Framework.Authentication.dll
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\bin\Release\netcoreapp3.1\TSoft.Framework.Authentication.pdb
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\bin\Release\netcoreapp3.1\Tsoft.Framework.CacheMemory.dll
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\bin\Release\netcoreapp3.1\Tsoft.Framework.Common.dll
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\bin\Release\netcoreapp3.1\TSoft.Framework.DB.dll
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\bin\Release\netcoreapp3.1\Tsoft.Framework.CacheMemory.pdb
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\bin\Release\netcoreapp3.1\Tsoft.Framework.Common.pdb
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\bin\Release\netcoreapp3.1\TSoft.Framework.DB.pdb
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\obj\Release\netcoreapp3.1\TSoft.Framework.Authentication.csprojAssemblyReference.cache
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\obj\Release\netcoreapp3.1\TSoft.Framework.Authentication.AssemblyInfoInputs.cache
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\obj\Release\netcoreapp3.1\TSoft.Framework.Authentication.AssemblyInfo.cs
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\obj\Release\netcoreapp3.1\TSoft.Framework.Authentication.csproj.CoreCompileInputs.cache
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\obj\Release\netcoreapp3.1\TSoft.Framework.Authentication.csproj.CopyComplete
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\obj\Release\netcoreapp3.1\TSoft.Framework.Authentication.dll
+E:\A-TCOM\CRM\crm.backend\TSoft.Framework.Authentication\obj\Release\netcoreapp3.1\TSoft.Framework.Authentication.pdb

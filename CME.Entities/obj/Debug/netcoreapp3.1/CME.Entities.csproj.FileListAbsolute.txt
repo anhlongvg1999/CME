@@ -1,0 +1,14 @@
+E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Entities\bin\Debug\netcoreapp3.1\CME.Entities.deps.json
+E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Entities\bin\Debug\netcoreapp3.1\CME.Entities.dll
+E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Entities\bin\Debug\netcoreapp3.1\CME.Entities.pdb
+E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Entities\bin\Debug\netcoreapp3.1\Tsoft.Framework.Common.dll
+E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Entities\bin\Debug\netcoreapp3.1\TSoft.Framework.DB.dll
+E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Entities\bin\Debug\netcoreapp3.1\TSoft.Framework.DB.pdb
+E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Entities\bin\Debug\netcoreapp3.1\Tsoft.Framework.Common.pdb
+E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Entities\obj\Debug\netcoreapp3.1\CME.Entities.csprojAssemblyReference.cache
+E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Entities\obj\Debug\netcoreapp3.1\CME.Entities.AssemblyInfoInputs.cache
+E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Entities\obj\Debug\netcoreapp3.1\CME.Entities.AssemblyInfo.cs
+E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Entities\obj\Debug\netcoreapp3.1\CME.Entities.csproj.CoreCompileInputs.cache
+E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Entities\obj\Debug\netcoreapp3.1\CME.Entities.csproj.CopyComplete
+E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Entities\obj\Debug\netcoreapp3.1\CME.Entities.dll
+E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Entities\obj\Debug\netcoreapp3.1\CME.Entities.pdb
