@@ -13,7 +13,6 @@ namespace CME.Entities
         [Key]
         public Guid Id { get; set; }
 
-        [Required]
         public string Username { get; set; }
 
         [Required]
@@ -34,7 +33,7 @@ namespace CME.Entities
 
                 if (words.Length > 1)
                 {
-                    var lengthLastname = fullname.Length - fullname.Length;
+                    var lengthLastname = fullname.Length - Firstname.Length;
                     Lastname = fullname.Substring(0, lengthLastname).Trim();
                 }
             }
