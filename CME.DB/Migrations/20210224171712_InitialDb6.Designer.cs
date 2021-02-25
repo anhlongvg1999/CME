@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SERP.Filenet.DB;
 
 namespace CME.DB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210224171712_InitialDb6")]
+    partial class InitialDb6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,8 +106,8 @@ namespace CME.DB.Migrations
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
                             Address = "12 Chu Văn An, Điện Bàn, Ba Đình, Hà Nội",
                             Code = "BVXP",
-                            CreatedOnDate = new DateTime(2021, 2, 25, 0, 59, 44, 483, DateTimeKind.Local).AddTicks(5504),
-                            LastModifiedOnDate = new DateTime(2021, 2, 25, 0, 59, 44, 484, DateTimeKind.Local).AddTicks(7446),
+                            CreatedOnDate = new DateTime(2021, 2, 25, 0, 17, 11, 964, DateTimeKind.Local).AddTicks(9668),
+                            LastModifiedOnDate = new DateTime(2021, 2, 25, 0, 17, 11, 966, DateTimeKind.Local).AddTicks(937),
                             Name = "BV Xanh Pôn"
                         });
                 });
@@ -241,51 +243,6 @@ namespace CME.DB.Migrations
                     b.ToTable("TrainingPrograms");
                 });
 
-            modelBuilder.Entity("CME.Entities.TrainingProgram_User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
-                    b.Property<Guid?>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CreatedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("CreatedOnDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("LastModifiedOnDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TrainingProgramId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TrainingSubjectName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TrainingProgramId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("TrainingProgram_User");
-                });
-
             modelBuilder.Entity("CME.Entities.TrainingSubject", b =>
                 {
                     b.Property<Guid>("Id")
@@ -331,6 +288,48 @@ namespace CME.DB.Migrations
                     b.HasIndex("TrainingFormId");
 
                     b.ToTable("cat_TrainingSubjects");
+                });
+
+            modelBuilder.Entity("CME.Entities.TraningProgram_User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<Guid?>("ApplicationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedOnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastModifiedOnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TrainingProgramId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrainingProgramId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TraningProgram_User");
                 });
 
             modelBuilder.Entity("CME.Entities.User", b =>
@@ -441,7 +440,18 @@ namespace CME.DB.Migrations
                     b.Navigation("Organization");
                 });
 
-            modelBuilder.Entity("CME.Entities.TrainingProgram_User", b =>
+            modelBuilder.Entity("CME.Entities.TrainingSubject", b =>
+                {
+                    b.HasOne("CME.Entities.TrainingForm", "TrainingForm")
+                        .WithMany("TrainingSubjects")
+                        .HasForeignKey("TrainingFormId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TrainingForm");
+                });
+
+            modelBuilder.Entity("CME.Entities.TraningProgram_User", b =>
                 {
                     b.HasOne("CME.Entities.TrainingProgram", "TrainingProgram")
                         .WithMany()
@@ -458,17 +468,6 @@ namespace CME.DB.Migrations
                     b.Navigation("TrainingProgram");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CME.Entities.TrainingSubject", b =>
-                {
-                    b.HasOne("CME.Entities.TrainingForm", "TrainingForm")
-                        .WithMany("TrainingSubjects")
-                        .HasForeignKey("TrainingFormId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TrainingForm");
                 });
 
             modelBuilder.Entity("CME.Entities.User", b =>

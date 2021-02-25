@@ -18,5 +18,6 @@ namespace CME.Entities
 
         public string Code { get; set; }
 
+        public ICollection<TrainingSubject> TrainingSubjects { get; set; }
     }
 }

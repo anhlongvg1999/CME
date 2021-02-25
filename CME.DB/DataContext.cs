@@ -14,6 +14,8 @@ namespace SERP.Filenet.DB
         public DbSet<Department> Departments { get; set; }
         public DbSet<TrainingForm> TrainingForms { get; set; }
         public DbSet<TrainingSubject> TrainingSubjects { get; set; }
+        public DbSet<TrainingProgram> TrainingPrograms { get; set; }
+        public DbSet<TrainingProgram_User> TrainingProgram_User { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -23,6 +23,7 @@ namespace CME.Business
             services.AddTransient<ITitleService, TitleService>();
             services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<ITrainingFormService, TrainingFormService>();
+            services.AddTransient<ITrainingProgramService, TrainingProgramService>();
 
             return services;
         }

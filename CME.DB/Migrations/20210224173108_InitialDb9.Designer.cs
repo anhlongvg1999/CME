@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SERP.Filenet.DB;
 
 namespace CME.DB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210224173108_InitialDb9")]
+    partial class InitialDb9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,8 +106,8 @@ namespace CME.DB.Migrations
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
                             Address = "12 Chu Văn An, Điện Bàn, Ba Đình, Hà Nội",
                             Code = "BVXP",
-                            CreatedOnDate = new DateTime(2021, 2, 25, 0, 59, 44, 483, DateTimeKind.Local).AddTicks(5504),
-                            LastModifiedOnDate = new DateTime(2021, 2, 25, 0, 59, 44, 484, DateTimeKind.Local).AddTicks(7446),
+                            CreatedOnDate = new DateTime(2021, 2, 25, 0, 31, 7, 990, DateTimeKind.Local).AddTicks(7175),
+                            LastModifiedOnDate = new DateTime(2021, 2, 25, 0, 31, 7, 992, DateTimeKind.Local).AddTicks(570),
                             Name = "BV Xanh Pôn"
                         });
                 });
@@ -270,9 +272,6 @@ namespace CME.DB.Migrations
 
                     b.Property<Guid>("TrainingProgramId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TrainingSubjectName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
