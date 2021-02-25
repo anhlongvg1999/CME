@@ -31,10 +31,15 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(TitleViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> ImportUser([FromForm] ImportUserRequestModel requestModel)
         {
-            using (var transaction = _dataContext.Database.BeginTransaction())
-            {
+            //using (var transaction = _dataContext.Database.BeginTransaction())
+            //{
                 try
                 {
+                    var oldTitles = _dataContext.Titles.ToList();
+                    _dataContext.RemoveRange(oldTitles);
+
+                    var oldDepartments = _dataContext.Departments.ToList();
+                    _dataContext.RemoveRange(oldDepartments);
                     // Xóa tất cả user trong db
                     var oldUsers = _dataContext.Users.ToList();
                     _dataContext.RemoveRange(oldUsers);
@@ -63,35 +68,69 @@ namespace CME.Apis.Controllers
                             {
                                 issueDate = new DateTime();
                             }
+                        var words = fullname.Trim().Split(' ');
 
-
-                            var user = new User();
+                        var user = new User();
+                            user.Id = Guid.NewGuid();
                             user.Fullname = fullname;
+                            user.Username = "vvvv";
+                            user.Firstname= words[words.Length - 1];
                             user.CertificateNumber = certificationNumber;
                             user.IssueDate = issueDate;
                             user.OrganizationId = Guid.Parse("00000000-0000-0000-0000-000000000001");
 
                             var passwordHasher = new PasswordHasher<User>();
                             user.Password = passwordHasher.HashPassword(user, "123456a@");
+                            string nameTitle = worksheet.Cell(i, 6).Value.ToString();
+                            string nameDepartment = worksheet.Cell(i, 7).Value.ToString();
+                            var nameKhoaPhong= _dataContext.Departments.Where(x => nameDepartment.Contains(x.Name)).ToList();
+                            var nameChucDanh = _dataContext.Titles.Where(x => nameTitle.Contains(x.Name)).ToList();
+                            if(nameChucDanh.Count() >0)
+                            {
+
+                            }
+                            else
+                            {
+                                var title = new Title();
+                                title.Id = Guid.NewGuid();
+                                title.Name = nameTitle;
+                                await _dataContext.Titles.AddAsync(title);
+                            _dataContext.SaveChanges();
+                        }
+                            if (nameKhoaPhong.Count() > 0)
+                            {
+
+                            }
+                            else
+                            {
+                                var department = new Department();
+                                department.Id = Guid.NewGuid();
+                                department.Name = nameDepartment;
+                                department.OrganizationId = Guid.Parse("00000000-0000-0000-0000-000000000001");
+                                await _dataContext.Departments.AddAsync(department);
+                            _dataContext.SaveChanges();
+                        }
+                            //Check name title in title array
+                            //If not exist: Add title to array
+                            //Else: user.TitleId = title.Id
+
 
                             await _dataContext.AddAsync(user);
                         }
                     }
-
+                       
                     _dataContext.SaveChanges();
-
-                    transaction.Commit();
+                    return null;
+                    //transaction.Commit();
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback();
+                    //transaction.Rollback();
                     Console.WriteLine("Error occurred.");
-                }
+                return null;
             }
-
-
-
-            return null;
+            //}
+            //return null;
             //return await ExecuteFunction(async () =>
             //{
             //    var model = AutoMapperUtils.AutoMap<TitleRequestModel, Title>(requestModel);

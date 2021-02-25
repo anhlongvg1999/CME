@@ -5,11 +5,9 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Apis\CME.Apis.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>E:\A-Outsource\Xanhpon\CME-Backend\CME\CME.Apis\CME.Apis.xml</DocumentationFile>
+    <DocumentationFile>
+      bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml
+    </DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
