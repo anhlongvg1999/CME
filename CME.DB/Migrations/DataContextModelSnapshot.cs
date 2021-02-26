@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SERP.Filenet.DB;
 
@@ -15,43 +14,42 @@ namespace CME.DB.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.3")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.3");
 
             modelBuilder.Entity("CME.Entities.Department", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("CreatedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("LastModifiedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("LastModifiedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid>("OrganizationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("ParentId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -64,35 +62,35 @@ namespace CME.DB.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("CreatedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("LastModifiedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("LastModifiedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("ParentId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -104,8 +102,8 @@ namespace CME.DB.Migrations
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
                             Address = "12 Chu Văn An, Điện Bàn, Ba Đình, Hà Nội",
                             Code = "BVXP",
-                            CreatedOnDate = new DateTime(2021, 2, 25, 0, 59, 44, 483, DateTimeKind.Local).AddTicks(5504),
-                            LastModifiedOnDate = new DateTime(2021, 2, 25, 0, 59, 44, 484, DateTimeKind.Local).AddTicks(7446),
+                            CreatedOnDate = new DateTime(2021, 2, 26, 16, 29, 59, 553, DateTimeKind.Local).AddTicks(1171),
+                            LastModifiedOnDate = new DateTime(2021, 2, 26, 16, 29, 59, 554, DateTimeKind.Local).AddTicks(2047),
                             Name = "BV Xanh Pôn"
                         });
                 });
@@ -114,32 +112,32 @@ namespace CME.DB.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("CreatedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("LastModifiedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("LastModifiedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("ParentId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -150,93 +148,108 @@ namespace CME.DB.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("CreatedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("LastModifiedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("LastModifiedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("ParentId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
                     b.ToTable("cat_TrainingForms");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-200000000001"),
+                            Code = "HTHN",
+                            CreatedOnDate = new DateTime(2021, 2, 26, 16, 29, 59, 556, DateTimeKind.Local).AddTicks(5120),
+                            LastModifiedOnDate = new DateTime(2021, 2, 26, 16, 29, 59, 556, DateTimeKind.Local).AddTicks(5135),
+                            Name = "Hội thảo, hội nghị"
+                        });
                 });
 
             modelBuilder.Entity("CME.Entities.TrainingProgram", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("CreatedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("FromDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("LastModifiedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("LastModifiedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("MetaData")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Note")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("OrganizationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("ParentId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime?>("ToDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid?>("TrainingFormId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrganizationId");
+
+                    b.HasIndex("TrainingFormId");
 
                     b.ToTable("TrainingPrograms");
                 });
@@ -245,37 +258,37 @@ namespace CME.DB.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<double>("Amount")
-                        .HasColumnType("float");
+                        .HasColumnType("double");
 
                     b.Property<Guid?>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("CreatedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("LastModifiedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("LastModifiedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("ParentId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("TrainingProgramId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("TrainingSubjectName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -290,41 +303,41 @@ namespace CME.DB.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<double>("Amount")
-                        .HasColumnType("float");
+                        .HasColumnType("double");
 
                     b.Property<Guid?>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("CreatedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("LastModifiedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("LastModifiedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("ParentId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("TrainingFormId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -337,78 +350,81 @@ namespace CME.DB.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("AvatarUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime?>("BirthDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("CertificateNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("CreatedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("CreatedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("DepartmentId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Firstname")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Fullname")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int?>("Gender")
                         .HasColumnType("int");
 
                     b.Property<string>("IdentificationNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("IssueDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("LastModifiedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("LastModifiedOnDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Lastname")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid>("OrganizationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("ParentId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("TitleId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
@@ -438,13 +454,19 @@ namespace CME.DB.Migrations
                         .WithMany()
                         .HasForeignKey("OrganizationId");
 
+                    b.HasOne("CME.Entities.TrainingForm", "TrainingForm")
+                        .WithMany()
+                        .HasForeignKey("TrainingFormId");
+
                     b.Navigation("Organization");
+
+                    b.Navigation("TrainingForm");
                 });
 
             modelBuilder.Entity("CME.Entities.TrainingProgram_User", b =>
                 {
                     b.HasOne("CME.Entities.TrainingProgram", "TrainingProgram")
-                        .WithMany()
+                        .WithMany("TrainingProgram_Users")
                         .HasForeignKey("TrainingProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -497,6 +519,11 @@ namespace CME.DB.Migrations
             modelBuilder.Entity("CME.Entities.TrainingForm", b =>
                 {
                     b.Navigation("TrainingSubjects");
+                });
+
+            modelBuilder.Entity("CME.Entities.TrainingProgram", b =>
+                {
+                    b.Navigation("TrainingProgram_Users");
                 });
 #pragma warning restore 612, 618
         }

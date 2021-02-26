@@ -1,6 +1,7 @@
 ﻿using CME.Business.Interfaces;
 using CME.Business.Models;
 using CME.Entities;
+using CME.Entities.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,9 @@ namespace CME.Apis.Controllers
         [HttpGet("")]
         [ProducesResponseType(typeof(Pagination<UserViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll(
+            [FromQuery] Guid organizationId,
+            [FromQuery] Guid departmentId,
+            [FromQuery] Guid titleId,
             [FromQuery] int currentPage = 1,
             [FromQuery] int pageSize = 20,
             [FromQuery] string sort = "",
@@ -40,6 +44,9 @@ namespace CME.Apis.Controllers
                 filterObject.CurrentPage = currentPage;
                 filterObject.PageSize = pageSize;
                 filterObject.Sort = sort;
+                filterObject.DepartmentId = departmentId;
+                filterObject.OrganizationId = organizationId;
+                filterObject.TitleId = titleId;
 
                 return await _userService.GetAllAsync(filterObject);
             });
@@ -66,7 +73,7 @@ namespace CME.Apis.Controllers
 
                 //TODO: FAKE PASSWORD
                 var passwordHasher = new PasswordHasher<User>();
-                user.Password = passwordHasher.HashPassword(user, "123456a@");
+                user.Password = passwordHasher.HashPassword(user, Default.Password);
 
 
                 var result = await _userService.SaveAsync(user, requestModel.AvatarFile);

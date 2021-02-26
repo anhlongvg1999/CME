@@ -28,6 +28,11 @@ namespace CME.Entities
         [ForeignKey("OrganizationId")]
         public Organization Organization { get; set; }
 
+        public Guid? TrainingFormId { get; set; }
+
+        [ForeignKey("TrainingFormId")]
+        public TrainingForm TrainingForm { get; set; }
+
         public string Address { get; set; }
 
         public string Note { get; set; }

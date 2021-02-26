@@ -10,11 +10,11 @@ using TSoft.Framework.DB;
 using System.Linq;
 using Tsoft.Framework.Common;
 using CME.Entities;
-using CME.Business.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using CME.Entities.Constants;
 
 namespace CME.Business.Implementations
 {
@@ -66,6 +66,34 @@ namespace CME.Business.Implementations
                             LastModifiedOnDate = u.LastModifiedOnDate
                         };
 
+            if (queryModel.ListTextSearch != null && queryModel.ListTextSearch.Count > 0)
+            {
+                foreach (var ts in queryModel.ListTextSearch)
+                {
+                    query = query.Where(q =>
+                        q.Fullname.Contains(ts) ||
+                        q.Code.Contains(ts) ||
+                        q.CertificateNumber.Contains(ts) ||
+                        q.Email.Contains(ts)
+                    );
+                }
+            }
+
+            if(queryModel.DepartmentId != null && queryModel.DepartmentId != Guid.Empty)
+            {
+                query = query.Where(x => x.DepartmentId == queryModel.DepartmentId);
+            }
+
+            if (queryModel.OrganizationId != null && queryModel.OrganizationId != Guid.Empty)
+            {
+                query = query.Where(x => x.OrganizationId == queryModel.OrganizationId);
+            }
+
+            if (queryModel.TitleId != null && queryModel.TitleId != Guid.Empty)
+            {
+                query = query.Where(x => x.TitleId == queryModel.TitleId);
+            }
+
             return await query.GetPagedAsync(queryModel.CurrentPage.Value, queryModel.PageSize.Value, queryModel.Sort);
         }
 
@@ -87,45 +115,49 @@ namespace CME.Business.Implementations
             model.Organization = null;
             model.Title = null;
             model.Department = null;
-            // Check user type
-            if (model.Type == UserType.INTERNAL)
-            {
-                if (string.IsNullOrEmpty(model.Code))
-                {
-                    throw new ArgumentException("Mã nhân viên không được để trống");
-                }
-                model.Username = model.Code;
-            }
-            else if (model.Type == UserType.EXTERNAL)
-            {
-                if (string.IsNullOrEmpty(model.IdentificationNumber))
-                {
-                    throw new ArgumentException("Số CMND không được để trống");
-                }
-                model.Username = model.IdentificationNumber;
-            }
-            else
-            {
-                throw new ArgumentException($"Không tồn tại loại đối tượng: {model.Type}");
-            }
 
-            // Check is exist
-            if (model.Id == null || model.Id == Guid.Empty)
+            if ((!string.IsNullOrEmpty(model.Code) && model.Type == UserType.INTERNAL) || (!string.IsNullOrEmpty(model.IdentificationNumber) && model.Type == UserType.EXTERNAL))
             {
-                if (await UsernameIsExist(model.Username))
+                // Check user type
+                if (model.Type == UserType.INTERNAL)
                 {
-                    throw new ArgumentException("Tên tài khoản đã tồn tại");
+                    if (string.IsNullOrEmpty(model.Code))
+                    {
+                        throw new ArgumentException("Mã nhân viên không được để trống");
+                    }
+                    model.Username = model.Code;
+                }
+                else if (model.Type == UserType.EXTERNAL)
+                {
+                    if (string.IsNullOrEmpty(model.IdentificationNumber))
+                    {
+                        throw new ArgumentException("Số CMND không được để trống");
+                    }
+                    model.Username = model.IdentificationNumber;
+                }
+                else
+                {
+                    throw new ArgumentException($"Không tồn tại loại đối tượng: {model.Type}");
                 }
 
-            }
-            else
-            {
-                var oldUser = await GetById(model.Id);
-                if (oldUser.Username != model.Username)
+                // Check is exist
+                if (model.Id == null || model.Id == Guid.Empty)
                 {
                     if (await UsernameIsExist(model.Username))
                     {
                         throw new ArgumentException("Tên tài khoản đã tồn tại");
+                    }
+
+                }
+                else
+                {
+                    var oldUser = await GetById(model.Id);
+                    if (oldUser.Username != model.Username)
+                    {
+                        if (await UsernameIsExist(model.Username))
+                        {
+                            throw new ArgumentException("Tên tài khoản đã tồn tại");
+                        }
                     }
                 }
             }

@@ -35,6 +35,18 @@ namespace CME.Business.Implementations
                             Code = tit.Code,
                             LastModifiedOnDate = tit.LastModifiedOnDate
                         };
+
+            if (queryModel.ListTextSearch != null && queryModel.ListTextSearch.Count > 0)
+            {
+                foreach (var ts in queryModel.ListTextSearch)
+                {
+                    query = query.Where(q =>
+                        q.Name.Contains(ts) ||
+                        q.Code.Contains(ts)
+                    );
+                }
+            }
+
             return await query.GetPagedAsync(queryModel.CurrentPage.Value, queryModel.PageSize.Value, queryModel.Sort);
         }
 

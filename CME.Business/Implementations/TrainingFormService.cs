@@ -36,6 +36,17 @@ namespace CME.Business.Implementations
                             TrainingSubjects = _dataContext.TrainingSubjects.Where(x => x.TrainingFormId == tr.Id).OrderBy(x => x.Order).ToList(),
                             LastModifiedOnDate = tr.LastModifiedOnDate
                         };
+            if (queryModel.ListTextSearch != null && queryModel.ListTextSearch.Count > 0)
+            {
+                foreach (var ts in queryModel.ListTextSearch)
+                {
+                    query = query.Where(q =>
+                        q.Name.Contains(ts) ||
+                        q.Code.Contains(ts)
+                    );
+                }
+            }
+
             var result = await query.GetPagedAsync(queryModel.CurrentPage.Value, queryModel.PageSize.Value, queryModel.Sort);
 
             return result;
@@ -91,6 +102,9 @@ namespace CME.Business.Implementations
             await _dataContext.SaveChangesAsync();
 
             InvalidCache(model.Id);
+
+            //TODO: Xử lý loop bên trong dữ liệu
+            model.TrainingSubjects = null;
 
             return model;
         }

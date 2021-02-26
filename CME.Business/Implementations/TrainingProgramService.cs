@@ -27,7 +27,7 @@ namespace CME.Business.Implementations
 
         public async Task<Pagination<TrainingProgramViewModel>> GetAllAsync(TrainingProgramQueryModel queryModel)
         {
-            var query = from trp in _dataContext.TrainingPrograms.AsNoTracking().Include(x => x.Organization).Include(x => x.TrainingProgram_Users)
+            var query = from trp in _dataContext.TrainingPrograms.AsNoTracking().Include(x => x.Organization).Include(x => x.TrainingForm).Include(x => x.TrainingProgram_Users)
                         select new TrainingProgramViewModel
                         {
                             Id = trp.Id,
@@ -37,6 +37,8 @@ namespace CME.Business.Implementations
                             ToDate = trp.ToDate,
                             OrganizationId = trp.OrganizationId,
                             Organization = trp.Organization,
+                            TrainingFormId = trp.TrainingFormId,
+                            TrainingForm = trp.TrainingForm,
                             Address = trp.Address,
                             Note = trp.Note,
                             Status = trp.Status,
@@ -44,18 +46,32 @@ namespace CME.Business.Implementations
                             LastModifiedOnDate = trp.LastModifiedOnDate,
                             TrainingProgram_Users = trp.TrainingProgram_Users
                         };
+
+            if (queryModel.ListTextSearch != null && queryModel.ListTextSearch.Count > 0)
+            {
+                foreach (var ts in queryModel.ListTextSearch)
+                {
+                    query = query.Where(q =>
+                        q.Name.Contains(ts) ||
+                        q.Code.Contains(ts) ||
+                        q.Address.Contains(ts)
+                    );
+                }
+            }
+
             return await query.GetPagedAsync(queryModel.CurrentPage.Value, queryModel.PageSize.Value, queryModel.Sort);
         }
 
         public async Task<TrainingProgram> GetById(Guid id)
         {
-            var model = await _dataContext.TrainingPrograms.AsNoTracking().Include(x => x.Organization).FirstOrDefaultAsync(x => x.Id == id);
+            var model = await _dataContext.TrainingPrograms.AsNoTracking().Include(x => x.Organization).Include(x => x.TrainingForm).FirstOrDefaultAsync(x => x.Id == id);
             return model;
         }
 
         public async Task<TrainingProgram> SaveAsync(TrainingProgram model, ICollection<TrainingProgram_UserRequestModel> trainingProgram_UserRequestModel)
         {
             model.Organization = null;
+            model.TrainingForm = null;
             model.TrainingProgram_Users = new List<TrainingProgram_User>();
 
             if (model.Id == null || model.Id == Guid.Empty)

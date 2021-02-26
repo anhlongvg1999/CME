@@ -55,16 +55,16 @@ namespace CME.Apis.Controllers
             });
         }
 
-        [HttpPost("")]
-        [ProducesResponseType(typeof(TrainingFormViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Create(TrainingFormRequestModel requestModel)
-        {
-            return await ExecuteFunction(async () =>
-            {
-                var model = AutoMapperUtils.AutoMap<TrainingFormRequestModel, TrainingForm>(requestModel);
-                return await _trainingFormService.SaveAsync(model, requestModel.TrainingSubjects);
-            });
-        }
+        //[HttpPost("")]
+        //[ProducesResponseType(typeof(TrainingFormViewModel), StatusCodes.Status200OK)]
+        //public async Task<IActionResult> Create(TrainingFormRequestModel requestModel)
+        //{
+        //    return await ExecuteFunction(async () =>
+        //    {
+        //        var model = AutoMapperUtils.AutoMap<TrainingFormRequestModel, TrainingForm>(requestModel);
+        //        return await _trainingFormService.SaveAsync(model, requestModel.TrainingSubjects);
+        //    });
+        //}
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(TrainingFormViewModel), StatusCodes.Status200OK)]
@@ -85,14 +85,14 @@ namespace CME.Apis.Controllers
             });
         }
 
-        [HttpPost("delete/many")]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        public async Task<IActionResult> DeleteMany([FromBody] Guid[] deleteIds)
-        {
-            return await ExecuteFunction(async () =>
-            {
-                return await _trainingFormService.DeleteManyAsync(deleteIds);
-            });
-        }
+        //[HttpPost("delete/many")]
+        //[ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        //public async Task<IActionResult> DeleteMany([FromBody] Guid[] deleteIds)
+        //{
+        //    return await ExecuteFunction(async () =>
+        //    {
+        //        return await _trainingFormService.DeleteManyAsync(deleteIds);
+        //    });
+        //}
     }
 }

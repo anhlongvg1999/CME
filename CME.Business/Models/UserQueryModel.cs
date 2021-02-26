@@ -7,5 +7,10 @@ namespace CME.Business.Models
 {
     public class UserQueryModel : PaginationRequest
     {
+        public Guid OrganizationId;
+
+        public Guid DepartmentId;
+
+        public Guid TitleId;
     }
 }

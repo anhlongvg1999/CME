@@ -21,7 +21,6 @@ namespace CME.Entities
         [Required]
         public string Firstname { get; set; }
 
-        [NotMapped]
         public string Fullname
         {
             get => $"{Lastname} {Firstname}";

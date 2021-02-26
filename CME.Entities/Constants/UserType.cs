@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CME.Business.Constants
+namespace CME.Entities.Constants
 {
     public static class UserType
     {

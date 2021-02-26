@@ -1,4 +1,5 @@
 ﻿using CME.Entities;
+using CME.Entities.Constants;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -23,14 +24,26 @@ namespace SERP.Filenet.DB
             modelBuilder.Entity<Organization>().HasData(
                 new Organization
                 {
-                    Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                    Name = "BV Xanh Pôn",
-                    Code = "BVXP",
-                    Address = "12 Chu Văn An, Điện Bàn, Ba Đình, Hà Nội",
+                    Id = Guid.Parse(Default.OrganizationId),
+                    Name = Default.OrganizationName,
+                    Code = Default.OrganizationCode,
+                    Address = Default.OrganizationAddress,
                     CreatedOnDate = DateTime.Now,
                     LastModifiedOnDate = DateTime.Now
                 }
             );
+
+            modelBuilder.Entity<TrainingForm>().HasData(
+                new TrainingForm
+                {
+                    Id = Guid.Parse(Default.TrainingFormId),
+                    Name = Default.TrainingFormName,
+                    Code = Default.TrainingFormCode,
+                    CreatedOnDate = DateTime.Now,
+                    LastModifiedOnDate = DateTime.Now
+                }
+            );
+
         }
     }
 }

@@ -17,6 +17,8 @@ namespace CME.Business.Models
 
         public Guid? OrganizationId { get; set; }
 
+        public Guid? TrainingFormId { get; set; }
+
         public string Address { get; set; }
 
         public string Note { get; set; }
