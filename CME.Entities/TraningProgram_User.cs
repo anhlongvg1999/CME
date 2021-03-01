@@ -25,6 +25,10 @@ namespace CME.Entities
 
         public string TrainingSubjectName { get; set; }
 
+        public bool Active { get; set; }
+
         public double Amount { get; set; }
+
+        public int Year { get; set; }
     }
 }

@@ -16,6 +16,15 @@ namespace CME.Entities.Constants
         public static string TrainingFormName = "Hội thảo, hội nghị";
         public static string TrainingFormCode = "HTHN";
 
+        public static string TrainingSubjectId_Participant = "00000000-0000-0000-0000-300000000001";
+        public static string TrainingSubjectName_Participant = "Người tham dự";
+        public static int TrainingSubjectAmount_Participant = 4;
+
+        public static string TrainingSubjectId_Owner = "00000000-0000-0000-0000-300000000002";
+        public static string TrainingSubjectName_Owner= "Chủ trì";
+        public static int TrainingSubjectAmount_Owner = 8;
+
+
 
         public static string Password = "123456a@";
     }

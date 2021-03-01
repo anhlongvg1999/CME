@@ -35,6 +35,8 @@ namespace CME.Business.Models
 
         public ICollection<TrainingProgram_User> TrainingProgram_Users { get; set; }
 
+        public int NumberOfParticipants { get; set; }
+
         public DateTime? LastModifiedOnDate { get; set; }
     }
 }

@@ -18,5 +18,7 @@ namespace CME.Business.Interfaces
         Task<User> SaveAsync(User user, IFormFile avatarFile);
 
         Task<bool> DeleteManyAsync(Guid[] deleteIds);
+
+        Task<List<TrainingProgram_User>> GetTrainingPrograms(Guid id, int year);
     }
 }

@@ -12,5 +12,7 @@ namespace CME.Business.Models
         public string TrainingSubjectName { get; set; }
 
         public double Amount { get; set; }
+
+        public bool Active { get; set; }
     }
 }

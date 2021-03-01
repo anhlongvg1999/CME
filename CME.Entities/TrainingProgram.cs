@@ -23,6 +23,8 @@ namespace CME.Entities
 
         public DateTime? ToDate { get; set; }
 
+        public int Year { get; set; }
+
         public Guid? OrganizationId { get; set; }
 
         [ForeignKey("OrganizationId")]

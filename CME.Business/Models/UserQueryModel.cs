@@ -12,5 +12,7 @@ namespace CME.Business.Models
         public Guid DepartmentId;
 
         public Guid TitleId;
+
+        public int? Year;
     }
 }

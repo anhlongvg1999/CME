@@ -30,6 +30,7 @@ namespace CME.Apis.Controllers
         [HttpGet("")]
         [ProducesResponseType(typeof(Pagination<UserViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll(
+            [FromQuery] int year,
             [FromQuery] Guid organizationId,
             [FromQuery] Guid departmentId,
             [FromQuery] Guid titleId,
@@ -47,6 +48,7 @@ namespace CME.Apis.Controllers
                 filterObject.DepartmentId = departmentId;
                 filterObject.OrganizationId = organizationId;
                 filterObject.TitleId = titleId;
+                filterObject.Year = year;
 
                 return await _userService.GetAllAsync(filterObject);
             });
@@ -107,6 +109,18 @@ namespace CME.Apis.Controllers
             return await ExecuteFunction(async () =>
             {
                 return await _userService.DeleteManyAsync(deleteIds);
+            });
+        }
+
+
+        [HttpGet("{id}/training-programs")]
+        [ProducesResponseType(typeof(List<TrainingProgram_User>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByUserId(Guid id, [FromQuery] int year)
+        {
+            return await ExecuteFunction(async () =>
+            {
+                var result = await _userService.GetTrainingPrograms(id, year);
+                return result;
             });
         }
     }

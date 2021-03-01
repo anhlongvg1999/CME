@@ -32,11 +32,40 @@ namespace Tsoft.Framework.Common
             IMapper mapper = new Mapper(config);
             return mapper;
         }
+
+        private static IMapper GetMapper<TSource1, TDestination1, TSource2, TDestination2>()
+        {
+            var config = new MapperConfiguration(cfg => {
+                cfg.AddCollectionMappers();
+                cfg.AllowNullCollections = true;
+                cfg.AllowNullDestinationValues = true;
+                cfg.CreateMap<TSource1, TDestination1>(MemberList.None);
+                cfg.CreateMap<TSource2, TDestination2>(MemberList.None);
+            });
+
+            IMapper mapper = new Mapper(config);
+            return mapper;
+        }
         #region Single
         public static TDestination AutoMap<TSource, TDestination>(TSource source)
         {
             var mapper = GetMapper<TSource, TDestination>();
             TDestination dest = mapper.Map<TDestination>(source);
+            return dest;
+        }
+
+        public static TDestination1 AutoMap<TSource1, TDestination1, TSource2, TDestination2>(TSource1 source)
+        {
+            var mapper = GetMapper<TSource1, TDestination1, TSource2, TDestination2>();
+            TDestination1 dest = mapper.Map<TDestination1>(source);
+            return dest;
+        }
+
+
+        public static TDestination1 AutoMap<TSource1, TDestination1, TSource2, TDestination2>(TSource1 source, TDestination1 dest)
+        {
+            var mapper = GetMapper<TSource1, TDestination1, TSource2, TDestination2>();
+            dest = mapper.Map(source, dest);
             return dest;
         }
 

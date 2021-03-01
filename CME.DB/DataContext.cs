@@ -44,6 +44,30 @@ namespace SERP.Filenet.DB
                 }
             );
 
+            modelBuilder.Entity<TrainingSubject>().HasData(
+                new TrainingSubject
+                {
+                    Id = Guid.Parse(Default.TrainingSubjectId_Participant),
+                    Name = Default.TrainingSubjectName_Participant,
+                    Amount = Default.TrainingSubjectAmount_Participant,
+                    TrainingFormId = Guid.Parse(Default.TrainingFormId),
+                    CreatedOnDate = DateTime.Now,
+                    LastModifiedOnDate = DateTime.Now
+                }
+            );
+
+            modelBuilder.Entity<TrainingSubject>().HasData(
+                new TrainingSubject
+                {
+                    Id = Guid.Parse(Default.TrainingSubjectId_Owner),
+                    Name = Default.TrainingSubjectName_Owner,
+                    Amount = Default.TrainingSubjectAmount_Owner,
+                    TrainingFormId = Guid.Parse(Default.TrainingFormId),
+                    CreatedOnDate = DateTime.Now,
+                    LastModifiedOnDate = DateTime.Now
+                }
+            );
+
         }
     }
 }

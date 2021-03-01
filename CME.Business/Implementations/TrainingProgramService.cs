@@ -10,6 +10,11 @@ using System.Threading.Tasks;
 using Tsoft.Framework.Common;
 using TSoft.Framework.DB;
 using System.Linq;
+using System.IO;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.AspNetCore.Hosting;
 
 namespace CME.Business.Implementations
 {
@@ -17,17 +22,19 @@ namespace CME.Business.Implementations
     {
         private const string CachePrefix = "trainingProgram-";
         private readonly DataContext _dataContext;
+        private readonly IHostingEnvironment _environment;
         //private readonly ICacheService _cacheService;
 
         //TODO: CACHE
-        public TrainingProgramService(DataContext dataContext)
+        public TrainingProgramService(DataContext dataContext, IHostingEnvironment environment)
         {
             _dataContext = dataContext;
+            _environment = environment;
         }
 
         public async Task<Pagination<TrainingProgramViewModel>> GetAllAsync(TrainingProgramQueryModel queryModel)
         {
-            var query = from trp in _dataContext.TrainingPrograms.AsNoTracking().Include(x => x.Organization).Include(x => x.TrainingForm).Include(x => x.TrainingProgram_Users)
+            var query = from trp in _dataContext.TrainingPrograms.AsNoTracking().Include(x => x.Organization).Include(x => x.TrainingForm)
                         select new TrainingProgramViewModel
                         {
                             Id = trp.Id,
@@ -43,8 +50,7 @@ namespace CME.Business.Implementations
                             Note = trp.Note,
                             Status = trp.Status,
                             MetaDataObject = trp.MetaDataObject,
-                            LastModifiedOnDate = trp.LastModifiedOnDate,
-                            TrainingProgram_Users = trp.TrainingProgram_Users
+                            LastModifiedOnDate = trp.LastModifiedOnDate
                         };
 
             if (queryModel.ListTextSearch != null && queryModel.ListTextSearch.Count > 0)
@@ -59,12 +65,46 @@ namespace CME.Business.Implementations
                 }
             }
 
-            return await query.GetPagedAsync(queryModel.CurrentPage.Value, queryModel.PageSize.Value, queryModel.Sort);
+            if (queryModel.FromDate.HasValue)
+            {
+                var fromDate = new DateTime(queryModel.FromDate.Value.Year, queryModel.FromDate.Value.Month, queryModel.FromDate.Value.Day);
+                query = query.Where(x => x.FromDate >= fromDate);
+            }
+            if (queryModel.ToDate.HasValue)
+            {
+                var toDate = new DateTime(queryModel.ToDate.Value.Year, queryModel.ToDate.Value.Month, queryModel.ToDate.Value.Day).AddDays(1);
+                query = query.Where(x => x.ToDate < toDate);
+            }
+
+
+            if (queryModel.TrainingFormId != null)
+            {
+                query = query.Where(x => x.TrainingFormId == queryModel.TrainingFormId);
+            }
+
+            var result = await query.GetPagedAsync(queryModel.CurrentPage.Value, queryModel.PageSize.Value, queryModel.Sort);
+            return result;
         }
 
         public async Task<TrainingProgram> GetById(Guid id)
         {
-            var model = await _dataContext.TrainingPrograms.AsNoTracking().Include(x => x.Organization).Include(x => x.TrainingForm).FirstOrDefaultAsync(x => x.Id == id);
+            var model = await _dataContext.TrainingPrograms
+                .AsNoTracking()
+                .Include(x => x.Organization)
+                .Include(x => x.TrainingForm).Include(x => x.TrainingProgram_Users).FirstOrDefaultAsync(x => x.Id == id);
+
+            var query = from trp_u in _dataContext.TrainingProgram_User.Where(x => x.TrainingProgramId == model.Id)
+                        join user in _dataContext.Users.Include(x => x.Department).Include(x => x.Title) on trp_u.UserId equals user.Id
+                        select new TrainingProgram_User
+                        {
+                            UserId = trp_u.UserId,
+                            User = user,
+                            TrainingSubjectName = trp_u.TrainingSubjectName,
+                            Amount = trp_u.Amount,
+                            Active = trp_u.Active
+                        };
+            model.TrainingProgram_Users = await query.ToListAsync();
+            model.TrainingProgram_Users = model.TrainingProgram_Users.OrderBy(x => x.User.Firstname).ThenBy(x => x.User.Lastname).ToList();
             return model;
         }
 
@@ -73,6 +113,11 @@ namespace CME.Business.Implementations
             model.Organization = null;
             model.TrainingForm = null;
             model.TrainingProgram_Users = new List<TrainingProgram_User>();
+
+            if (model.ToDate != null)
+            {
+                model.Year = model.ToDate.Value.Year;
+            }
 
             if (model.Id == null || model.Id == Guid.Empty)
             {
@@ -107,6 +152,8 @@ namespace CME.Business.Implementations
                         TrainingSubjectName = item.TrainingSubjectName,
                         UserId = item.UserId,
                         Amount = item.Amount,
+                        Active = item.Active,
+                        Year = model.Year,
                         //x.CreatedByUserId = userId;
                         CreatedOnDate = DateTime.Now,
                         //x.LastModifiedByUserId = actorId;
@@ -118,6 +165,9 @@ namespace CME.Business.Implementations
             await _dataContext.SaveChangesAsync();
 
             InvalidCache(model.Id);
+
+            //TODO: Xử lý loop bên trong dữ liệu
+            model.TrainingProgram_Users = null;
 
             return model;
         }
@@ -139,6 +189,75 @@ namespace CME.Business.Implementations
             }
             await _dataContext.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<TrainingProgram_User> Checkin(Guid TrainingProgramId, Guid UserId, bool Active)
+        {
+            var model = await _dataContext.TrainingProgram_User.Where(x => x.UserId == UserId && x.TrainingProgramId == TrainingProgramId).FirstOrDefaultAsync();
+
+            if (model == null)
+            {
+                throw new ArgumentException($"Không tồn tại bản ghi");
+            }
+
+            model.Active = Active;
+            _dataContext.Update(model);
+
+            await _dataContext.SaveChangesAsync();
+            return model;
+        }
+
+        public async Task<List<FileInfoModel>> ExportCertifications(Guid id, TrainingProgram model)
+        {
+            var trp_users = await _dataContext.TrainingProgram_User.Where(x => x.TrainingProgramId == id && x.Active == true).Include(x => x.User).ToListAsync();
+            var listFile = new List<FileInfoModel>();
+
+            var templatePath = Path.Combine(_environment.WebRootPath, "templates", "certificate-2021-01-01.docx");
+            using (WordprocessingDocument templateDoc = WordprocessingDocument.Open(templatePath, false))
+            {
+
+                foreach (var item in trp_users)
+                {
+                    var pathToSave = Path.Combine(_environment.WebRootPath, "certificate", id.ToString());
+                    if (!Directory.Exists(pathToSave))
+                        Directory.CreateDirectory(pathToSave);
+
+                    var filePath = Path.Combine(pathToSave, item.UserId + ".docx");
+
+                    using (var newDoc = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
+                    {
+                        foreach (var part in templateDoc.Parts)
+                            newDoc.AddPart(part.OpenXmlPart, part.RelationshipId);
+                        MainDocumentPart mainPart = newDoc.MainDocumentPart;
+                        Body body = mainPart.Document.Body;
+
+                        foreach (var text in body.Descendants<Text>())
+                        {
+                            if (text.Text.Contains("[Name]"))
+                            {
+                                text.Text = text.Text.Replace("[Name]", item.User.Fullname);
+                            }
+                            if (text.Text.Contains("[Title]"))
+                            {
+
+
+                                text.Text = text.Text.Replace("[Title]", model.Name); //49 kí tự
+                            }
+                        }
+                        newDoc.Save();
+
+                        listFile.Add(new FileInfoModel
+                        {
+                            FileName = item.User.Fullname + " " + item.User.CertificateNumber.Replace("/", "-") + ".docx",
+                            FilePath = filePath
+                        });
+                    }
+
+
+                }
+            }
+
+            return listFile;
         }
 
         private void InvalidCache(Guid id)

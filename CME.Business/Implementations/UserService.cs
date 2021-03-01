@@ -79,7 +79,7 @@ namespace CME.Business.Implementations
                 }
             }
 
-            if(queryModel.DepartmentId != null && queryModel.DepartmentId != Guid.Empty)
+            if (queryModel.DepartmentId != null && queryModel.DepartmentId != Guid.Empty)
             {
                 query = query.Where(x => x.DepartmentId == queryModel.DepartmentId);
             }
@@ -94,7 +94,33 @@ namespace CME.Business.Implementations
                 query = query.Where(x => x.TitleId == queryModel.TitleId);
             }
 
-            return await query.GetPagedAsync(queryModel.CurrentPage.Value, queryModel.PageSize.Value, queryModel.Sort);
+            var result = await query.GetPagedAsync(queryModel.CurrentPage.Value, queryModel.PageSize.Value, queryModel.Sort);
+
+            if (queryModel.Year != null && queryModel.Year != 0)
+            {
+                //for (var i = 0; i < result.Content.Count(); i++)
+                //{
+                //    var newUser = new UserViewModel();
+                //    newUser = AutoMapperUtils.AutoMap<UserViewModel, UserViewModel>(result.Content.ElementAt(i));
+                //    newUser.AmoutInYear = 2000;
+                //    //    var AmoutInYear = _dataContext.TrainingProgram_User.AsNoTracking()
+                //    //        .Where(x => x.UserId == result.Content.ElementAt(i).Id && x.Year == queryModel.Year).Count();
+                //    //    result.Content.ElementAt(i).AmoutInYear = AmoutInYear;
+                //    var a = result.Content.ElementAt(i);
+                //    result.Content.ElementAt(i) = newUser;
+                //}
+
+                result.Content = result.Content.Select(x =>
+                {
+                    var trp_u = _dataContext.TrainingProgram_User.AsNoTracking()
+                        .Where(t => t.UserId == x.Id && t.Year == queryModel.Year && t.Active == true).ToList();
+                    x.AmoutInYear = (Int32)trp_u.Sum(x => x.Amount);
+                    return x;
+                }).ToList();
+
+            }
+
+            return result;
         }
 
         public async Task<User> GetById(Guid id)
@@ -107,6 +133,25 @@ namespace CME.Business.Implementations
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             return user;
+        }
+
+        public async Task<List<TrainingProgram_User>> GetTrainingPrograms(Guid id, int year)
+        {
+            var trp_users = _dataContext.TrainingProgram_User.AsNoTracking().Include(x => x.TrainingProgram).Include(x => x.TrainingProgram.TrainingForm).Where(x => x.UserId == id && x.Active == true);
+            if (year != 0)
+            {
+                trp_users = trp_users.Where(x => x.Year == year);
+            }
+
+            var result = await trp_users.ToListAsync();
+
+            result = result.Select(item =>
+            {
+                item.TrainingProgram.TrainingProgram_Users = null;
+                return item;
+            }).ToList();
+
+            return result;
         }
 
         public async Task<User> SaveAsync(User model, IFormFile avatarFile)
@@ -195,7 +240,7 @@ namespace CME.Business.Implementations
 
             InvalidCache(model.Id);
 
-            return model;
+            return await GetById(model.Id);
         }
 
         public async Task<bool> DeleteManyAsync(Guid[] deleteIds)

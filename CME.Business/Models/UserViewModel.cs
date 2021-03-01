@@ -48,6 +48,8 @@ namespace CME.Business.Models
 
         public Department Department { get; set; }
 
+        public int AmoutInYear { get; set; }
+
         public DateTime? LastModifiedOnDate { get; set; }
     }
 }
