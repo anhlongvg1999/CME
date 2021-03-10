@@ -26,6 +26,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tsoft.Framework.Common", "F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TSoft.Framework.DB", "Framework\TSoft.Framework.DB\TSoft.Framework.DB.csproj", "{FB5D4249-E261-4ED9-B46C-006B341BA34C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tsoft.Framework.Office", "Tsoft.Framework.Office\Tsoft.Framework.Office.csproj", "{6F3D0D45-D917-4FDF-ADC5-75416E3ECD17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{FB5D4249-E261-4ED9-B46C-006B341BA34C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB5D4249-E261-4ED9-B46C-006B341BA34C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB5D4249-E261-4ED9-B46C-006B341BA34C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F3D0D45-D917-4FDF-ADC5-75416E3ECD17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F3D0D45-D917-4FDF-ADC5-75416E3ECD17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F3D0D45-D917-4FDF-ADC5-75416E3ECD17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F3D0D45-D917-4FDF-ADC5-75416E3ECD17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{815409A6-3D5D-4840-AA25-928CA8901E84} = {1E8AF228-1B5B-4D27-86DF-565DEFF73362}
 		{6E9706BA-1961-4DD9-B154-862718753264} = {1E8AF228-1B5B-4D27-86DF-565DEFF73362}
 		{FB5D4249-E261-4ED9-B46C-006B341BA34C} = {1E8AF228-1B5B-4D27-86DF-565DEFF73362}
+		{6F3D0D45-D917-4FDF-ADC5-75416E3ECD17} = {1E8AF228-1B5B-4D27-86DF-565DEFF73362}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25A2D83D-599E-4511-9EE7-8702FE09586F}

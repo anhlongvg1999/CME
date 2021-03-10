@@ -7,6 +7,8 @@ namespace CME.Business.Models
 {
     public class UserRequestModel
     {
+        public string Username { get; set; }
+
         public string Fullname { get; set; }
 
         public string Code { get; set; }
@@ -29,7 +31,7 @@ namespace CME.Business.Models
 
         public Guid? TitleId { get; set; }
 
-        public Guid OrganizationId { get; set; }
+        public Guid? OrganizationId { get; set; }
 
         public Guid? DepartmentId { get; set; }
 

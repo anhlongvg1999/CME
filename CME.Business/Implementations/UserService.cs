@@ -40,7 +40,11 @@ namespace CME.Business.Implementations
         public async Task<Pagination<UserViewModel>> GetAllAsync(UserQueryModel queryModel)
         {
 
-            var query = from u in _dataContext.Users.AsNoTracking().Include(x => x.Department).Include(x => x.Organization).Include(x => x.Title)
+            var query = from u in _dataContext.Users.AsNoTracking()
+                            .Include(x => x.Department)
+                            .Include(x => x.Organization)
+                            .Include(x => x.Title)
+                            .Include(x => x.Roles)
                         select new UserViewModel
                         {
                             Id = u.Id,
@@ -112,7 +116,7 @@ namespace CME.Business.Implementations
 
                 result.Content = result.Content.Select(x =>
                 {
-                    var trp_u = _dataContext.TrainingProgram_User.AsNoTracking()
+                    var trp_u = _dataContext.TrainingProgram_Users.AsNoTracking()
                         .Where(t => t.UserId == x.Id && t.Year == queryModel.Year && t.Active == true).ToList();
                     x.AmoutInYear = (Int32)trp_u.Sum(x => x.Amount);
                     return x;
@@ -130,14 +134,28 @@ namespace CME.Business.Implementations
                 .Include(x => x.Organization)
                 .Include(x => x.Title)
                 .Include(x => x.Department)
+                .Include(x => x.Roles)
                 .FirstOrDefaultAsync(x => x.Id == id);
+
+            return user;
+        }
+
+        public async Task<User> GetByUsername(string username)
+        {
+            var user = await _dataContext.Users
+                .AsNoTracking()
+                .Include(x => x.Organization)
+                .Include(x => x.Title)
+                .Include(x => x.Department)
+                .Include(x => x.Roles)
+                .FirstOrDefaultAsync(x => x.Username.ToLower() == username.ToLower());
 
             return user;
         }
 
         public async Task<List<TrainingProgram_User>> GetTrainingPrograms(Guid id, int year)
         {
-            var trp_users = _dataContext.TrainingProgram_User.AsNoTracking().Include(x => x.TrainingProgram).Include(x => x.TrainingProgram.TrainingForm).Where(x => x.UserId == id && x.Active == true);
+            var trp_users = _dataContext.TrainingProgram_Users.AsNoTracking().Include(x => x.TrainingProgram).Include(x => x.TrainingProgram.TrainingForm).Where(x => x.UserId == id && x.Active == true);
             if (year != 0)
             {
                 trp_users = trp_users.Where(x => x.Year == year);
@@ -161,51 +179,51 @@ namespace CME.Business.Implementations
             model.Title = null;
             model.Department = null;
 
-            if ((!string.IsNullOrEmpty(model.Code) && model.Type == UserType.INTERNAL) || (!string.IsNullOrEmpty(model.IdentificationNumber) && model.Type == UserType.EXTERNAL))
-            {
-                // Check user type
-                if (model.Type == UserType.INTERNAL)
-                {
-                    if (string.IsNullOrEmpty(model.Code))
-                    {
-                        throw new ArgumentException("Mã nhân viên không được để trống");
-                    }
-                    model.Username = model.Code;
-                }
-                else if (model.Type == UserType.EXTERNAL)
-                {
-                    if (string.IsNullOrEmpty(model.IdentificationNumber))
-                    {
-                        throw new ArgumentException("Số CMND không được để trống");
-                    }
-                    model.Username = model.IdentificationNumber;
-                }
-                else
-                {
-                    throw new ArgumentException($"Không tồn tại loại đối tượng: {model.Type}");
-                }
+            //if ((!string.IsNullOrEmpty(model.Code) && model.Type == UserType.INTERNAL) || (!string.IsNullOrEmpty(model.IdentificationNumber) && model.Type == UserType.EXTERNAL))
+            //{
+            //    // Check user type
+            //    if (model.Type == UserType.INTERNAL)
+            //    {
+            //        if (string.IsNullOrEmpty(model.Code))
+            //        {
+            //            throw new ArgumentException("Mã nhân viên không được để trống");
+            //        }
+            //        model.Username = model.Code;
+            //    }
+            //    else if (model.Type == UserType.EXTERNAL)
+            //    {
+            //        if (string.IsNullOrEmpty(model.IdentificationNumber))
+            //        {
+            //            throw new ArgumentException("Số CMND không được để trống");
+            //        }
+            //        model.Username = model.IdentificationNumber;
+            //    }
+            //    else
+            //    {
+            //        throw new ArgumentException($"Không tồn tại loại đối tượng: {model.Type}");
+            //    }
 
-                // Check is exist
-                if (model.Id == null || model.Id == Guid.Empty)
-                {
-                    if (await UsernameIsExist(model.Username))
-                    {
-                        throw new ArgumentException("Tên tài khoản đã tồn tại");
-                    }
+            //    // Check is exist
+            //    if (model.Id == null || model.Id == Guid.Empty)
+            //    {
+            //        if (await UsernameIsExist(model.Username))
+            //        {
+            //            throw new ArgumentException("Tên tài khoản đã tồn tại");
+            //        }
 
-                }
-                else
-                {
-                    var oldUser = await GetById(model.Id);
-                    if (oldUser.Username != model.Username)
-                    {
-                        if (await UsernameIsExist(model.Username))
-                        {
-                            throw new ArgumentException("Tên tài khoản đã tồn tại");
-                        }
-                    }
-                }
-            }
+            //    }
+            //    else
+            //    {
+            //        var oldUser = await GetById(model.Id);
+            //        if (oldUser.Username != model.Username)
+            //        {
+            //            if (await UsernameIsExist(model.Username))
+            //            {
+            //                throw new ArgumentException("Tên tài khoản đã tồn tại");
+            //            }
+            //        }
+            //    }
+            //}
 
             // Upload Avatar
             if (avatarFile != null && avatarFile.Length > 0)

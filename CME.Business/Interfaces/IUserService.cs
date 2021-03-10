@@ -15,6 +15,8 @@ namespace CME.Business.Interfaces
 
         Task<User> GetById(Guid id);
 
+        Task<User> GetByUsername(string username);
+
         Task<User> SaveAsync(User user, IFormFile avatarFile);
 
         Task<bool> DeleteManyAsync(Guid[] deleteIds);

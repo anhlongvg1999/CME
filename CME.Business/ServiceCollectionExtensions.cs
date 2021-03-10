@@ -26,6 +26,8 @@ namespace CME.Business
             services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<ITrainingFormService, TrainingFormService>();
             services.AddTransient<ITrainingProgramService, TrainingProgramService>();
+            services.AddTransient<IExportService, ExportService>();
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
 
             return services;
         }

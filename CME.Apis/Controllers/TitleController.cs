@@ -33,7 +33,7 @@ namespace CME.Apis.Controllers
             [FromQuery] string sort = "",
             [FromQuery] string queryString = "{ }")
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 var filterObject = JsonSerializer.Deserialize<TitleQueryModel>(queryString);
                 filterObject.CurrentPage = currentPage;
@@ -48,7 +48,7 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(TitleViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(Guid id)
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 var result = await _titleService.GetById(id);
                 return AutoMapperUtils.AutoMap<Title, TitleViewModel>(result); ;
@@ -59,7 +59,7 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(TitleViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Create(TitleRequestModel requestModel)
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 var model = AutoMapperUtils.AutoMap<TitleRequestModel, Title>(requestModel);
                 return await _titleService.SaveAsync(model);
@@ -70,7 +70,7 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(TitleViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Update(Guid id, [FromBody] TitleRequestModel requestModel)
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 var model = await _titleService.GetById(id);
 
@@ -88,7 +88,7 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteMany([FromBody] Guid[] deleteIds)
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 return await _titleService.DeleteManyAsync(deleteIds);
             });

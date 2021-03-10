@@ -21,6 +21,9 @@ namespace CME.Business.Interfaces
 
         Task<TrainingProgram_User> Checkin(Guid trainingProgramId, Guid userId, bool active);
 
-        Task<List<FileInfoModel>> ExportCertifications(Guid id, TrainingProgram model);
+        Task<MemoryStream> ExportCertifications(Guid id);
+
+        Task<bool> ChangeStatus(Guid id, string status);
+
     }
 }

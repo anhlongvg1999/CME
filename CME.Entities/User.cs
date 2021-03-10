@@ -65,7 +65,7 @@ namespace CME.Entities
         [ForeignKey("TitleId")]
         public Title Title { get; set; }
 
-        public Guid OrganizationId { get; set; }
+        public Guid? OrganizationId { get; set; }
 
         [ForeignKey("OrganizationId")]
         public Organization Organization { get; set; }
@@ -74,5 +74,7 @@ namespace CME.Entities
 
         [ForeignKey("DepartmentId")]
         public Department Department { get; set; }
+
+        public ICollection<Role> Roles { get; set; }
     }
 }

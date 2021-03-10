@@ -34,7 +34,7 @@ namespace CME.Apis.Controllers
             [FromQuery] string sort = "",
             [FromQuery] string queryString = "{ }")
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 var filterObject = JsonSerializer.Deserialize<DepartmentQueryModel>(queryString);
                 filterObject.CurrentPage = currentPage;
@@ -50,7 +50,7 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(DepartmentViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(Guid id)
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 var result = await _departmentService.GetById(id);
                 return AutoMapperUtils.AutoMap<Department, DepartmentViewModel>(result);
@@ -61,7 +61,7 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(DepartmentViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Create(DepartmentRequestModel requestModel)
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 var model = AutoMapperUtils.AutoMap<DepartmentRequestModel, Department>(requestModel);
                 return await _departmentService.SaveAsync(model);
@@ -72,7 +72,7 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(DepartmentViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Update(Guid id, [FromBody] DepartmentRequestModel requestModel)
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 var model = await _departmentService.GetById(id);
 
@@ -90,7 +90,7 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteMany([FromBody] Guid[] deleteIds)
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 return await _departmentService.DeleteManyAsync(deleteIds);
             });

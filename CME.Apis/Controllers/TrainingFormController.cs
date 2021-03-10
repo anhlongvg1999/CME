@@ -33,7 +33,7 @@ namespace CME.Apis.Controllers
             [FromQuery] string sort = "",
             [FromQuery] string queryString = "{ }")
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 var filterObject = JsonSerializer.Deserialize<TrainingFormQueryModel>(queryString);
                 filterObject.CurrentPage = currentPage;
@@ -48,7 +48,7 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(TrainingFormViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(Guid id)
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 var result = await _trainingFormService.GetById(id);
                 return result;
@@ -70,7 +70,7 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(TrainingFormViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Update(Guid id, [FromBody] TrainingFormRequestModel requestModel)
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 var viewModel = await _trainingFormService.GetById(id);
                 var model = AutoMapperUtils.AutoMap<TrainingFormViewModel, TrainingForm>(viewModel);

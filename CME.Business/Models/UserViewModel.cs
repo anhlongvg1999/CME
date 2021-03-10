@@ -40,7 +40,7 @@ namespace CME.Business.Models
 
         public Title Title { get; set; }
 
-        public Guid OrganizationId { get; set; }
+        public Guid? OrganizationId { get; set; }
 
         public Organization Organization { get; set; }
 

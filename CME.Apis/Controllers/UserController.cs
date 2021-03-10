@@ -39,7 +39,7 @@ namespace CME.Apis.Controllers
             [FromQuery] string sort = "",
             [FromQuery] string queryString = "{ }")
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 var filterObject = JsonSerializer.Deserialize<UserQueryModel>(queryString);
                 filterObject.CurrentPage = currentPage;
@@ -58,7 +58,7 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(Guid id)
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 var result = await _userService.GetById(id);
                 return AutoMapperUtils.AutoMap<User, UserViewModel>(result); ;
@@ -69,16 +69,16 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Create([FromForm] UserRequestModel requestModel)
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
-                var user = AutoMapperUtils.AutoMap<UserRequestModel, User>(requestModel);
+                var model = AutoMapperUtils.AutoMap<UserRequestModel, User>(requestModel);
 
                 //TODO: FAKE PASSWORD
                 var passwordHasher = new PasswordHasher<User>();
-                user.Password = passwordHasher.HashPassword(user, Default.Password);
+                model.Password = passwordHasher.HashPassword(model, Default.Password);
 
 
-                var result = await _userService.SaveAsync(user, requestModel.AvatarFile);
+                var result = await _userService.SaveAsync(model, requestModel.AvatarFile);
                 return AutoMapperUtils.AutoMap<User, UserViewModel>(result);
             });
         }
@@ -87,7 +87,7 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Update(Guid id, [FromForm] UserRequestModel requestModel)
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 var model = await _userService.GetById(id);
 
@@ -106,7 +106,7 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteMany([FromBody] Guid[] deleteIds)
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 return await _userService.DeleteManyAsync(deleteIds);
             });
@@ -117,7 +117,7 @@ namespace CME.Apis.Controllers
         [ProducesResponseType(typeof(List<TrainingProgram_User>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByUserId(Guid id, [FromQuery] int year)
         {
-            return await ExecuteFunction(async () =>
+            return await ExecuteFunction(async (user) =>
             {
                 var result = await _userService.GetTrainingPrograms(id, year);
                 return result;

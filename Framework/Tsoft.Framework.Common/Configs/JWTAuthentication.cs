@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TSoft.Framework.ApiUtils.Authentication
+namespace Tsoft.Framework.Common.Configs
 {
     public class JWTAuthenticaion
     {

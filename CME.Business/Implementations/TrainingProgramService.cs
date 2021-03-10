@@ -15,6 +15,8 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Hosting;
+using CME.Entities.Constants;
+using System.IO.Compression;
 
 namespace CME.Business.Implementations
 {
@@ -93,7 +95,12 @@ namespace CME.Business.Implementations
                 .Include(x => x.Organization)
                 .Include(x => x.TrainingForm).Include(x => x.TrainingProgram_Users).FirstOrDefaultAsync(x => x.Id == id);
 
-            var query = from trp_u in _dataContext.TrainingProgram_User.Where(x => x.TrainingProgramId == model.Id)
+            if (model == null)
+            {
+                throw new ArgumentException($"Id {id} không tồn tại");
+            }
+
+            var query = from trp_u in _dataContext.TrainingProgram_Users.Where(x => x.TrainingProgramId == model.Id)
                         join user in _dataContext.Users.Include(x => x.Department).Include(x => x.Title) on trp_u.UserId equals user.Id
                         select new TrainingProgram_User
                         {
@@ -122,6 +129,7 @@ namespace CME.Business.Implementations
             if (model.Id == null || model.Id == Guid.Empty)
             {
                 model.Id = Guid.NewGuid();
+                model.Status = TrainingProgramStatus.Initial;
                 // TODO: USER_ID
                 //model.CreatedByUserId = userId;
                 model.CreatedOnDate = DateTime.Now;
@@ -136,8 +144,8 @@ namespace CME.Business.Implementations
                 // model.LastModifiedByUserId = actorId;
                 _dataContext.TrainingPrograms.Update(model);
 
-                var deleteTrainingProgram_Users = _dataContext.TrainingProgram_User.Where(x => x.TrainingProgramId == model.Id);
-                _dataContext.TrainingProgram_User.RemoveRange(deleteTrainingProgram_Users);
+                var deleteTrainingProgram_Users = _dataContext.TrainingProgram_Users.Where(x => x.TrainingProgramId == model.Id);
+                _dataContext.TrainingProgram_Users.RemoveRange(deleteTrainingProgram_Users);
             }
 
             if (trainingProgram_UserRequestModel != null && trainingProgram_UserRequestModel.Count > 0)
@@ -160,7 +168,7 @@ namespace CME.Business.Implementations
                         LastModifiedOnDate = DateTime.Now
                     });
                 }
-                await _dataContext.TrainingProgram_User.AddRangeAsync(trainingProgram_Users);
+                await _dataContext.TrainingProgram_Users.AddRangeAsync(trainingProgram_Users);
             }
             await _dataContext.SaveChangesAsync();
 
@@ -193,7 +201,7 @@ namespace CME.Business.Implementations
 
         public async Task<TrainingProgram_User> Checkin(Guid TrainingProgramId, Guid UserId, bool Active)
         {
-            var model = await _dataContext.TrainingProgram_User.Where(x => x.UserId == UserId && x.TrainingProgramId == TrainingProgramId).FirstOrDefaultAsync();
+            var model = await _dataContext.TrainingProgram_Users.Where(x => x.UserId == UserId && x.TrainingProgramId == TrainingProgramId).FirstOrDefaultAsync();
 
             if (model == null)
             {
@@ -207,9 +215,10 @@ namespace CME.Business.Implementations
             return model;
         }
 
-        public async Task<List<FileInfoModel>> ExportCertifications(Guid id, TrainingProgram model)
+        public async Task<MemoryStream> ExportCertifications(Guid id)
         {
-            var trp_users = await _dataContext.TrainingProgram_User.Where(x => x.TrainingProgramId == id && x.Active == true).Include(x => x.User).ToListAsync();
+            var model = await GetById(id);
+            var trp_users = await _dataContext.TrainingProgram_Users.Where(x => x.TrainingProgramId == id && x.Active == true).Include(x => x.User).ToListAsync();
             var listFile = new List<FileInfoModel>();
 
             var templatePath = Path.Combine(_environment.WebRootPath, "templates", "certificate-2021-01-01.docx");
@@ -218,7 +227,7 @@ namespace CME.Business.Implementations
 
                 foreach (var item in trp_users)
                 {
-                    var pathToSave = Path.Combine(_environment.WebRootPath, "certificate", id.ToString());
+                    var pathToSave = GetCertificationPath(id);
                     if (!Directory.Exists(pathToSave))
                         Directory.CreateDirectory(pathToSave);
 
@@ -257,7 +266,50 @@ namespace CME.Business.Implementations
                 }
             }
 
-            return listFile;
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var ziparchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {
+                    for (int i = 0; i < listFile.Count; i++)
+                    {
+                        ziparchive.CreateEntryFromFile(listFile[i].FilePath, listFile[i].FileName);
+                    }
+                }
+                //return File(memoryStream.ToArray(), "application/zip", "Attachments.zip");
+                var fileName = id + ".zip";
+                var fileZipPath = Path.Combine(GetCertificationPath(id), fileName);
+                using (var fs = new FileStream(fileZipPath, FileMode.Create, FileAccess.Write))
+                {
+                    memoryStream.WriteTo(fs);
+                }
+                return memoryStream;
+            }
+
+        }
+
+        private string GetCertificationPath(Guid id)
+        {
+            return Path.Combine(CertificationPath(), id.ToString());
+        }
+
+        public async Task<bool> ChangeStatus(Guid id, string status)
+        {
+            var model = await GetById(id);
+            model.Status = status;
+            var trainingProgram_UserRequestModels = new List<TrainingProgram_UserRequestModel>();
+            foreach(var trp_u in model.TrainingProgram_Users)
+            {
+                var trp_ur = AutoMapperUtils.AutoMap<TrainingProgram_User, TrainingProgram_UserRequestModel>(trp_u);
+                trainingProgram_UserRequestModels.Add(trp_ur);
+            }
+            await SaveAsync(model, trainingProgram_UserRequestModels);
+
+            return true;
+        }
+
+        public string CertificationPath()
+        {
+            return Path.Combine(_environment.WebRootPath, "certificate");
         }
 
         private void InvalidCache(Guid id)
