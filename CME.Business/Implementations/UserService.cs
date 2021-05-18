@@ -1,5 +1,7 @@
 ﻿using CME.Business.Interfaces;
 using CME.Business.Models;
+using CME.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using SERP.Filenet.DB;
 using System;
@@ -8,13 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TSoft.Framework.DB;
 using System.Linq;
-using Tsoft.Framework.Common;
-using CME.Entities;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
-using CME.Entities.Constants;
 
 namespace CME.Business.Implementations
 {
@@ -22,245 +19,12 @@ namespace CME.Business.Implementations
     {
         private const string CachePrefix = "user-";
         private readonly DataContext _dataContext;
-        private readonly IOrganizationService _organizationService;
-        private readonly ITitleService _titleService;
-        private readonly IDepartmentService _departmentService;
         private readonly IHostingEnvironment _environment;
-        //private readonly ICacheService _cacheService;
-
-        //TODO: CACHE
-        public UserService(DataContext dataContext, IOrganizationService organizationService, ITitleService titleService, IDepartmentService departmentService, IHostingEnvironment environment)
+        public UserService(DataContext dataContext, IHostingEnvironment environment)
         {
             _dataContext = dataContext;
-            _organizationService = organizationService;
-            _titleService = titleService;
-            _departmentService = departmentService;
             _environment = environment;
         }
-        public async Task<Pagination<UserViewModel>> GetAllAsync(UserQueryModel queryModel)
-        {
-
-            var query = from u in _dataContext.Users.AsNoTracking()
-                            .Include(x => x.Department)
-                            .Include(x => x.Organization)
-                            .Include(x => x.Title)
-                            .Include(x => x.Roles)
-                        select new UserViewModel
-                        {
-                            Id = u.Id,
-                            Username = u.Username,
-                            Firstname = u.Firstname,
-                            Lastname = u.Lastname,
-                            Fullname = u.Fullname,
-                            Code = u.Code,
-                            CertificateNumber = u.CertificateNumber,
-                            IssueDate = u.IssueDate,
-                            BirthDate = u.BirthDate,
-                            Email = u.Email,
-                            Gender = u.Gender,
-                            Address = u.Address,
-                            Type = u.Type,
-                            AvatarUrl = u.AvatarUrl,
-                            TitleId = u.TitleId,
-                            Title = u.Title,
-                            OrganizationId = u.OrganizationId,
-                            Organization = u.Organization,
-                            DepartmentId = u.DepartmentId,
-                            Department = u.Department,
-                            LastModifiedOnDate = u.LastModifiedOnDate
-                        };
-
-            if (queryModel.ListTextSearch != null && queryModel.ListTextSearch.Count > 0)
-            {
-                foreach (var ts in queryModel.ListTextSearch)
-                {
-                    query = query.Where(q =>
-                        q.Fullname.Contains(ts) ||
-                        q.Code.Contains(ts) ||
-                        q.CertificateNumber.Contains(ts) ||
-                        q.Email.Contains(ts)
-                    );
-                }
-            }
-
-            if (queryModel.DepartmentId != null && queryModel.DepartmentId != Guid.Empty)
-            {
-                query = query.Where(x => x.DepartmentId == queryModel.DepartmentId);
-            }
-
-            if (queryModel.OrganizationId != null && queryModel.OrganizationId != Guid.Empty)
-            {
-                query = query.Where(x => x.OrganizationId == queryModel.OrganizationId);
-            }
-
-            if (queryModel.TitleId != null && queryModel.TitleId != Guid.Empty)
-            {
-                query = query.Where(x => x.TitleId == queryModel.TitleId);
-            }
-
-            var result = await query.GetPagedAsync(queryModel.CurrentPage.Value, queryModel.PageSize.Value, queryModel.Sort);
-
-            if (queryModel.Year != null && queryModel.Year != 0)
-            {
-                //for (var i = 0; i < result.Content.Count(); i++)
-                //{
-                //    var newUser = new UserViewModel();
-                //    newUser = AutoMapperUtils.AutoMap<UserViewModel, UserViewModel>(result.Content.ElementAt(i));
-                //    newUser.AmoutInYear = 2000;
-                //    //    var AmoutInYear = _dataContext.TrainingProgram_User.AsNoTracking()
-                //    //        .Where(x => x.UserId == result.Content.ElementAt(i).Id && x.Year == queryModel.Year).Count();
-                //    //    result.Content.ElementAt(i).AmoutInYear = AmoutInYear;
-                //    var a = result.Content.ElementAt(i);
-                //    result.Content.ElementAt(i) = newUser;
-                //}
-
-                result.Content = result.Content.Select(x =>
-                {
-                    var trp_u = _dataContext.TrainingProgram_Users.AsNoTracking()
-                        .Where(t => t.UserId == x.Id && t.Year == queryModel.Year && t.Active == true).ToList();
-                    x.AmoutInYear = (Int32)trp_u.Sum(x => x.Amount);
-                    return x;
-                }).ToList();
-
-            }
-
-            return result;
-        }
-
-        public async Task<User> GetById(Guid id)
-        {
-            var user = await _dataContext.Users
-                .AsNoTracking()
-                .Include(x => x.Organization)
-                .Include(x => x.Title)
-                .Include(x => x.Department)
-                .Include(x => x.Roles)
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-            return user;
-        }
-
-        public async Task<User> GetByUsername(string username)
-        {
-            var user = await _dataContext.Users
-                .AsNoTracking()
-                .Include(x => x.Organization)
-                .Include(x => x.Title)
-                .Include(x => x.Department)
-                .Include(x => x.Roles)
-                .FirstOrDefaultAsync(x => x.Username.ToLower() == username.ToLower());
-
-            return user;
-        }
-
-        public async Task<List<TrainingProgram_User>> GetTrainingPrograms(Guid id, int year)
-        {
-            var trp_users = _dataContext.TrainingProgram_Users.AsNoTracking().Include(x => x.TrainingProgram).Include(x => x.TrainingProgram.TrainingForm).Where(x => x.UserId == id && x.Active == true);
-            if (year != 0)
-            {
-                trp_users = trp_users.Where(x => x.Year == year);
-            }
-
-            var result = await trp_users.ToListAsync();
-
-            result = result.Select(item =>
-            {
-                item.TrainingProgram.TrainingProgram_Users = null;
-                return item;
-            }).ToList();
-
-            return result;
-        }
-
-        public async Task<User> SaveAsync(User model, IFormFile avatarFile)
-        {
-            //TODO: Xem lại phần update user mà k set null
-            model.Organization = null;
-            model.Title = null;
-            model.Department = null;
-
-            //if ((!string.IsNullOrEmpty(model.Code) && model.Type == UserType.INTERNAL) || (!string.IsNullOrEmpty(model.IdentificationNumber) && model.Type == UserType.EXTERNAL))
-            //{
-            //    // Check user type
-            //    if (model.Type == UserType.INTERNAL)
-            //    {
-            //        if (string.IsNullOrEmpty(model.Code))
-            //        {
-            //            throw new ArgumentException("Mã nhân viên không được để trống");
-            //        }
-            //        model.Username = model.Code;
-            //    }
-            //    else if (model.Type == UserType.EXTERNAL)
-            //    {
-            //        if (string.IsNullOrEmpty(model.IdentificationNumber))
-            //        {
-            //            throw new ArgumentException("Số CMND không được để trống");
-            //        }
-            //        model.Username = model.IdentificationNumber;
-            //    }
-            //    else
-            //    {
-            //        throw new ArgumentException($"Không tồn tại loại đối tượng: {model.Type}");
-            //    }
-
-            //    // Check is exist
-            //    if (model.Id == null || model.Id == Guid.Empty)
-            //    {
-            //        if (await UsernameIsExist(model.Username))
-            //        {
-            //            throw new ArgumentException("Tên tài khoản đã tồn tại");
-            //        }
-
-            //    }
-            //    else
-            //    {
-            //        var oldUser = await GetById(model.Id);
-            //        if (oldUser.Username != model.Username)
-            //        {
-            //            if (await UsernameIsExist(model.Username))
-            //            {
-            //                throw new ArgumentException("Tên tài khoản đã tồn tại");
-            //            }
-            //        }
-            //    }
-            //}
-
-            // Upload Avatar
-            if (avatarFile != null && avatarFile.Length > 0)
-            {
-                model.AvatarUrl = await UploadAvatarFile(avatarFile);
-            }
-
-            //if (model.Password != null)
-            //{
-            //    var passwordHasher = new PasswordHasher<User>();
-            //    model.Password = passwordHasher.HashPassword(model, model.Password);
-            //}
-
-            if (model.Id == null || model.Id == Guid.Empty)
-            {
-                model.Id = Guid.NewGuid();
-                // TODO: USER_ID
-                //model.CreatedByUserId = userId;
-                model.CreatedOnDate = DateTime.Now;
-                model.LastModifiedOnDate = DateTime.Now;
-                await _dataContext.Users.AddAsync(model);
-            }
-            else
-            {
-                model.LastModifiedOnDate = DateTime.Now;
-                // TODO: USER_ID
-                //model.LastModifiedByUserId = userId;
-                _dataContext.Users.Update(model);
-            }
-
-            await _dataContext.SaveChangesAsync();
-
-            InvalidCache(model.Id);
-
-            return await GetById(model.Id);
-        }
-
         public async Task<bool> DeleteManyAsync(Guid[] deleteIds)
         {
             foreach (var id in deleteIds)
@@ -269,7 +33,7 @@ namespace CME.Business.Implementations
 
                 if (user == null)
                 {
-                    throw new ArgumentException($"Tài khoản {user.Fullname} không tồn tại");
+                    throw new ArgumentException($"Tài khoản {user.Username} không tồn tại");
                 }
 
                 var deleteUser = new User() { Id = id };
@@ -280,27 +44,75 @@ namespace CME.Business.Implementations
             return true;
         }
 
-        public async Task<bool> UsernameIsExist(string Username)
+        public async Task<Pagination<UserViewModel>> GetAllAsync(UserQueryModel queryModel)
         {
-            var user = await _dataContext.Users.Where(x => x.Username == Username).FirstOrDefaultAsync();
-            return user == null ? false : true;
+            var query = from u in _dataContext.Users.AsNoTracking()
+                        select new UserViewModel
+                        {
+                            Id = u.Id,
+                            Username = u.Username,
+                            Firstname = u.Firstname,
+                            BirthDate = u.BirthDate,
+                            Email = u.Email,
+                            Gender = u.Gender,
+                            Address = u.Address,
+                            AvatarUrl = u.AvatarUrl 
+                        };
+            var result = await query.GetPagedAsync(queryModel.CurrentPage.Value, queryModel.PageSize.Value, queryModel.Sort);
+            return result;
         }
 
-        public async Task<bool> CodeIsExist(string Code)
+        public async Task<User> GetById(Guid id)
         {
-            var user = await _dataContext.Users.Where(x => x.Code == Code).FirstOrDefaultAsync();
-            return user == null ? false : true;
+            var user = await _dataContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            return user;
         }
 
-        public async Task<bool> IdentificationNumberIsExist(string IdentificationNumber)
+        public async Task<User> GetByUsername(string username)
         {
-            var user = await _dataContext.Users.Where(x => x.IdentificationNumber == IdentificationNumber).FirstOrDefaultAsync();
-            return user == null ? false : true;
+            var user = await _dataContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Username == username);
+            return user;
+        }
+
+        public async Task<User> SaveAsync(User user)
+        {
+            
+            if(user.Id == null || user.Id == Guid.Empty)
+            {
+                if(await UsernameIsExist(user.Username))
+                {
+                    throw new ArgumentException("Tên tài khoản đã tồn tại");
+                }    
+            }
+            else 
+            {
+                var oldUser = await GetById(user.Id);
+                if (oldUser.Username != user.Username)
+                {
+                    if (await UsernameIsExist(user.Username))
+                    {
+                        throw new ArgumentException("Tên tài khoản đã tồn tại");
+                    }
+                }
+            }
+            if (user.Id == null || user.Id == Guid.Empty)
+            {
+                user.Id = Guid.NewGuid();
+                user.CreatedOnDate = DateTime.Now;
+                user.LastModifiedOnDate = DateTime.Now;
+                await _dataContext.Users.AddAsync(user);
+            }
+            else
+            {
+                user.LastModifiedOnDate = DateTime.Now;
+                _dataContext.Users.Update(user);
+            }
+            await _dataContext.SaveChangesAsync();
+            return await GetById(user.Id);
         }
 
         private async Task<string> UploadAvatarFile(IFormFile avatarFile)
         {
-
             var pathToSave = Path.Combine(_environment.WebRootPath, "avatars");
             if (!Directory.Exists(pathToSave))
                 Directory.CreateDirectory(pathToSave);
@@ -314,23 +126,10 @@ namespace CME.Business.Implementations
             return fileName;
         }
 
-        private void InvalidCache(Guid id)
+        public async Task<bool> UsernameIsExist(string Username)
         {
-            //string cacheKey = BuildCacheKey(id);
-            //string cacheMasterKey = BuildCacheMasterKey();
-
-            //_cacheService.Remove(cacheKey);
-            //_cacheService.Remove(cacheMasterKey);
+            var user = await _dataContext.Users.Where(x => x.Username == Username).FirstOrDefaultAsync();
+            return user == null ? false : true;
         }
-        private string BuildCacheKey(Guid id)
-        {
-            return $"{CachePrefix}{id}";
-        }
-
-        private string BuildCacheMasterKey()
-        {
-            return $"{CachePrefix}*";
-        }
-
     }
 }

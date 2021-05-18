@@ -21,36 +21,39 @@ namespace CME.Apis.Controllers
     public class UserController : ApiControllerBase
     {
         private readonly IUserService _userService;
-
         public UserController(IUserService userService)
         {
             _userService = userService;
         }
-
         [HttpGet("")]
         [ProducesResponseType(typeof(Pagination<UserViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll(
-            [FromQuery] int year,
-            [FromQuery] Guid organizationId,
-            [FromQuery] Guid departmentId,
-            [FromQuery] Guid titleId,
             [FromQuery] int currentPage = 1,
             [FromQuery] int pageSize = 20,
             [FromQuery] string sort = "",
             [FromQuery] string queryString = "{ }")
         {
-            return await ExecuteFunction(async (user) =>
+            return await ExecuteFunction(async () =>
             {
                 var filterObject = JsonSerializer.Deserialize<UserQueryModel>(queryString);
                 filterObject.CurrentPage = currentPage;
                 filterObject.PageSize = pageSize;
                 filterObject.Sort = sort;
-                filterObject.DepartmentId = departmentId;
-                filterObject.OrganizationId = organizationId;
-                filterObject.TitleId = titleId;
-                filterObject.Year = year;
 
                 return await _userService.GetAllAsync(filterObject);
+            });
+        }
+        [HttpPost("")]
+        [ProducesResponseType(typeof(UserRequestModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Create([FromBody] UserRequestModel requestModel)
+        {
+            return await ExecuteFunction(async () =>
+            {
+                var model = AutoMapperUtils.AutoMap<UserRequestModel, User>(requestModel);
+                var passwordHasher = new PasswordHasher<User>();
+                model.Password = passwordHasher.HashPassword(model, model.Password);
+                var result = await _userService.SaveAsync(model);
+                return AutoMapperUtils.AutoMap<User, UserRequestModel>(result);
             });
         }
 
@@ -64,30 +67,11 @@ namespace CME.Apis.Controllers
                 return AutoMapperUtils.AutoMap<User, UserViewModel>(result); ;
             });
         }
-
-        [HttpPost("")]
-        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Create([FromForm] UserRequestModel requestModel)
-        {
-            return await ExecuteFunction(async (user) =>
-            {
-                var model = AutoMapperUtils.AutoMap<UserRequestModel, User>(requestModel);
-
-                //TODO: FAKE PASSWORD
-                var passwordHasher = new PasswordHasher<User>();
-                model.Password = passwordHasher.HashPassword(model, Default.Password);
-
-
-                var result = await _userService.SaveAsync(model, requestModel.AvatarFile);
-                return AutoMapperUtils.AutoMap<User, UserViewModel>(result);
-            });
-        }
-
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Update(Guid id, [FromForm] UserRequestModel requestModel)
         {
-            return await ExecuteFunction(async (user) =>
+            return await ExecuteFunction(async () =>
             {
                 var model = await _userService.GetById(id);
 
@@ -97,30 +81,17 @@ namespace CME.Apis.Controllers
                 }
 
                 var newModel = AutoMapperUtils.AutoMap<UserRequestModel, User>(requestModel, model);
-                var result = await _userService.SaveAsync(newModel, requestModel.AvatarFile);
+                var result = await _userService.SaveAsync(newModel);
                 return AutoMapperUtils.AutoMap<User, UserViewModel>(result);
             });
         }
-
         [HttpPost("delete/many")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteMany([FromBody] Guid[] deleteIds)
         {
-            return await ExecuteFunction(async (user) =>
+            return await ExecuteFunction(async () =>
             {
                 return await _userService.DeleteManyAsync(deleteIds);
-            });
-        }
-
-
-        [HttpGet("{id}/training-programs")]
-        [ProducesResponseType(typeof(List<TrainingProgram_User>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByUserId(Guid id, [FromQuery] int year)
-        {
-            return await ExecuteFunction(async (user) =>
-            {
-                var result = await _userService.GetTrainingPrograms(id, year);
-                return result;
             });
         }
     }

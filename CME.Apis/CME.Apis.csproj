@@ -29,4 +29,8 @@
     <ProjectReference Include="..\Framework\TSoft.Framework.ApiUtils\TSoft.Framework.ApiUtils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\avatars\" />
+  </ItemGroup>
+
 </Project>

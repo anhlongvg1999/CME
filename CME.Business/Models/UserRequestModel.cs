@@ -9,17 +9,10 @@ namespace CME.Business.Models
     {
         public string Username { get; set; }
 
-        public string Fullname { get; set; }
+        public string Firstname { get; set; }
+        public string Password { get; set; }
 
-        public string Code { get; set; }
-
-        public string CertificateNumber { get; set; }
-
-        public string IdentificationNumber { get; set; }
-
-        public string IssueDate { get; set; }
-
-        public string? BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         public string Email { get; set; }
 
@@ -27,14 +20,6 @@ namespace CME.Business.Models
 
         public string Address { get; set; }
 
-        public string Type { get; set; } // Internal / External
-
-        public Guid? TitleId { get; set; }
-
-        public Guid? OrganizationId { get; set; }
-
-        public Guid? DepartmentId { get; set; }
-
-        public IFormFile AvatarFile { get; set; }
+        //public IFormFile AvatarFile { get; set; }
     }
 }

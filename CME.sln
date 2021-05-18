@@ -26,7 +26,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tsoft.Framework.Common", "F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TSoft.Framework.DB", "Framework\TSoft.Framework.DB\TSoft.Framework.DB.csproj", "{FB5D4249-E261-4ED9-B46C-006B341BA34C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tsoft.Framework.Office", "Tsoft.Framework.Office\Tsoft.Framework.Office.csproj", "{6F3D0D45-D917-4FDF-ADC5-75416E3ECD17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tsoft.Framework.Office", "Tsoft.Framework.Office\Tsoft.Framework.Office.csproj", "{6F3D0D45-D917-4FDF-ADC5-75416E3ECD17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

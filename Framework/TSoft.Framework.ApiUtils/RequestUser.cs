@@ -8,7 +8,6 @@ namespace TSoft.Framework.ApiUtils
     {
         public Guid Id { get; set; }
         public string Username { get; set; }
-        public string Fullname { get; set; }
-        public List<string> Roles { get; set; }
+        public string MacAdress { get; set; }   
     }
 }

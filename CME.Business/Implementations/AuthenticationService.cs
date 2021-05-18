@@ -1,20 +1,19 @@
-﻿using CME.Business.Interfaces;
+﻿
+using CME.Business.Interfaces;
 using CME.Business.Models;
 using CME.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using SERP.Filenet.DB;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Tsoft.Framework.Common;
 using Tsoft.Framework.Common.Configs;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace CME.Business.Implementations
 {
@@ -30,8 +29,7 @@ namespace CME.Business.Implementations
             _configuration = configuration;
             _userService = userService;
         }
-
-        public async Task<LoginResponseModel> Login(string username, string password)
+        public async Task<LoginResponseModel> Login(string username, string password, string macaddress)
         {
             var user = await _userService.GetByUsername(username);
             if (user == null)
@@ -44,32 +42,11 @@ namespace CME.Business.Implementations
                 throw new ArgumentException($"Tên tài khoản hoặc mật khẩu không đúng");
             }
 
-            var token = GenerateJwtToken(user);
+            var token = GenerateJwtToken(user,macaddress);
             var userVM = AutoMapperUtils.AutoMap<User, UserViewModel>(user);
             var response = new LoginResponseModel { User = userVM, Token = token };
             return response;
         }
-
-        public async Task<bool> ChangePassword(Guid userId, string oldPassword, string newPassword)
-        {
-            var user = await _userService.GetById(userId);
-            if (user == null)
-            {
-                throw new ArgumentException($"Tài khoản không tồn tại");
-            }
-
-            if (!VerifyPassword(user, oldPassword))
-            {
-                throw new ArgumentException($"Mật khẩu cũ không đúng");
-            }
-            var passwordHasher = new PasswordHasher<User>();
-            user.Password = passwordHasher.HashPassword(user, newPassword);
-
-            await _userService.SaveAsync(user, null);
-
-            return true;
-        }
-
         private bool VerifyPassword(User user, string password)
         {
             bool verified = false;
@@ -81,20 +58,13 @@ namespace CME.Business.Implementations
             else if (result == PasswordVerificationResult.Failed) verified = false;
             return verified;
         }
-
-        private string GenerateJwtToken(User user)
+        private string GenerateJwtToken(User user,string macaddress)
         {
-            string roles = "";
-            if (user.Roles != null)
-            {
-                roles = string.Join(",", user.Roles.Select(x => x.Code).ToList());
-            }
             var claims = new[]
                     {
                     new Claim("Id", user.Id.ToString()),
                     new Claim("Username", user.Username),
-                    new Claim("Fullname", user.Fullname),
-                    new Claim("Roles", roles),
+                    new Claim("MacAddress", macaddress.ToString()),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                     };

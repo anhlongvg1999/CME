@@ -19,16 +19,9 @@ namespace CME.Business
             services.AddDbContext<DataContext>(x => x.UseSqlServer(dbSetings.ConnectionString), ServiceLifetime.Transient);
 
             //services.AddDbContextPool<DataContext>(options => options.UseMySql(dbSetings.ConnectionString, ServerVersion.AutoDetect(dbSetings.ConnectionString)));
-
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IOrganizationService, OrganizationService>();
-            services.AddTransient<ITitleService, TitleService>();
-            services.AddTransient<IDepartmentService, DepartmentService>();
-            services.AddTransient<ITrainingFormService, TrainingFormService>();
-            services.AddTransient<ITrainingProgramService, TrainingProgramService>();
-            services.AddTransient<IExportService, ExportService>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
-
+            services.AddTransient<IReadCSVService, ReadCSVService>();
             return services;
         }
     }

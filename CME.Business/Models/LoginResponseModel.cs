@@ -6,7 +6,7 @@ namespace CME.Business.Models
 {
     public class LoginResponseModel
     {
-        public UserViewModel User {get;set;}
+        public UserViewModel User { get; set; }
         public string Token { get; set; }
     }
 }

@@ -54,14 +54,14 @@ namespace TSoft.Framework.ApiUtils.Controllers
                 {
                     requestUser.Id = userId;
                 }
-                requestUser.Fullname = claims.Claims.First(claim => claim.Type == "Fullname").Value;
+                //requestUser.Fullname = claims.Claims.First(claim => claim.Type == "Fullname").Value;
 
-                var roles = claims.Claims.First(claim => claim.Type == "Roles").Value;
-                if (!string.IsNullOrEmpty(roles))
-                {
-                    var listRoles = roles.Split(",").ToList();
-                    requestUser.Roles = listRoles;
-                }
+                //var roles = claims.Claims.First(claim => claim.Type == "Roles").Value;
+                //if (!string.IsNullOrEmpty(roles))
+                //{
+                //    var listRoles = roles.Split(",").ToList();
+                //    requestUser.Roles = listRoles;
+                //}
 
 
                 var result = await func(requestUser);

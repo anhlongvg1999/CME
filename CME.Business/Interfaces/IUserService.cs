@@ -12,15 +12,10 @@ namespace CME.Business.Interfaces
     public interface IUserService
     {
         Task<Pagination<UserViewModel>> GetAllAsync(UserQueryModel queryModel);
-
         Task<User> GetById(Guid id);
-
         Task<User> GetByUsername(string username);
-
-        Task<User> SaveAsync(User user, IFormFile avatarFile);
-
+        Task<User> SaveAsync(User user);
         Task<bool> DeleteManyAsync(Guid[] deleteIds);
-
-        Task<List<TrainingProgram_User>> GetTrainingPrograms(Guid id, int year);
+        Task<bool> UsernameIsExist(string Username);
     }
 }
